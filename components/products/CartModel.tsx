@@ -129,7 +129,7 @@ const CartModal = () => {
               return (
                 <div
                   key={item.id}
-                  className="bg-white border rounded-lg p-4 flex items-center justify-between"
+                  className="bg-white border rounded-lg p-4 flex items-center justify-between flex-wrap md:flex-nowrap space-y-3 md:space-y-0"
                 >
                   <div className="flex items-center space-x-4">
                     <span className="font-bold text-gray-500">
