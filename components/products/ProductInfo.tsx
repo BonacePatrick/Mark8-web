@@ -2,8 +2,8 @@
 
 import { FC, useState, useEffect } from "react";
 import { Minus, Plus, Heart } from "lucide-react";
-import { useCartStore } from "@/stores/cart-store/cartStore";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useCartStore } from "@/store/cart-store/cartStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
 import { fetchStores } from "@/services/api-client";
 import Image from "next/image";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { coverImage } from "@/app/assets";
-import { useShopStore } from "@/stores/shop-stores/shopStore";
+import { useShopStore } from "@/store/shop-stores/shopStore";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useState } from "react";

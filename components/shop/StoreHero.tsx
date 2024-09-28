@@ -1,6 +1,6 @@
 "use client";
 
-import { useShopStore } from "@/stores/shop-stores/shopStore";
+import { useShopStore } from "@/store/shop-stores/shopStore";
 import { FC, useEffect } from "react";
 
 const StoreHero: FC = () => {

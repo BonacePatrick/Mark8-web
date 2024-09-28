@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
 
 const ProductPageHero = () => {
   const [savedProductsCount, setSavedProductsCount] = useState<number | null>(null);

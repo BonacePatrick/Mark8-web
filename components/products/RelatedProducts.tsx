@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useProductStore } from "@/store/product-stores/productsStore"; 
 import ProductCard from "./ProductCard";
 
 interface RelatedProductsProps {

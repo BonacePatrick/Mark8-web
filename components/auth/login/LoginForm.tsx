@@ -10,7 +10,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import Loading from "@/components/Load-indicator/Loading";
-import { useAuthStore } from "@/stores/auth-stores/authStore";
+import { useAuthStore } from "@/store/auth-stores/authStore";
 import apiClient from "@/services/api-client";
 
 const loginSchema = z.object({
@@ -67,12 +67,6 @@ export default function LoginForm() {
         apiClient().defaults.headers.common[
           "Authorization"
         ] = `Bearer ${accessToken}`;
-        const userData = {
-          id: data.data.id,
-          email: data.data.email,
-          firstName: data.data.firstName,
-          lastName: data.data.lastName,
-        };
         setUser(data.data);
         toast.success("Login successfully");
         router.push("/");

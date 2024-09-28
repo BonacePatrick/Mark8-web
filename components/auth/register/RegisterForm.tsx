@@ -2,7 +2,7 @@
 
 import Loading from "@/components/Load-indicator/Loading";
 import apiClient from "@/services/api-client";
-import { useAuthStore } from "@/stores/auth-stores/authStore";
+import { useAuthStore } from "@/store/auth-stores/authStore"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
