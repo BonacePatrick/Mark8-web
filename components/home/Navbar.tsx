@@ -43,18 +43,19 @@ const Navbar = () => {
   const router = useRouter();
 
 
+  // handle dropdown toggle
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
   };
-
+  // handle mobile menu toggle
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-
+  //  handle search toggle
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
-
+  // get User name
  const getUserDisplayName = () => {
     if (!user || !user.firstName || !user.lastName) return 'User';
     const { firstName, lastName } = user;
@@ -64,6 +65,7 @@ const Navbar = () => {
     return user.email?.split('@')[0];
   };
 
+  // Get User email
   const getUserEmail = () => {
     return localStorage.getItem("user-email")|| "Not logged in"
   };
