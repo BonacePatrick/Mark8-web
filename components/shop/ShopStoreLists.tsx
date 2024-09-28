@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useShopStore } from "@/store/shop-stores/shopStore";
 import ShopItem from "./shopItem";
+import SpinnerLoading from "../Load-indicator/Spinner";
 
 const ShopStoreLists: React.FC = () => {
   const {
@@ -32,7 +33,7 @@ const ShopStoreLists: React.FC = () => {
         {filteredStores.map((store) => (
           <ShopItem key={store.id} shop={store} />
         ))}
-        {isLoading && <div className="text-center">Loading...</div>}
+        {isLoading && <SpinnerLoading/>}
         {error && <div className="text-center text-red-500">{error}</div>}
         {!isLoading && hasMore && (
           <div className="flex justify-center mt-6 group">
