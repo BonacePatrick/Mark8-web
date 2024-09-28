@@ -285,7 +285,7 @@ const Navbar = () => {
                 </span>
               </Link>
             </div>
-            <Link href="/open-store" passHref>
+            <Link href="#" passHref>
               <span className="bg-gray-100 border border-gray-300 rounded-full px-4 py-2 flex items-center space-x-2 hover:bg-gray-200">
                 <FaStore size={16} />
                 <span>Open A Store</span>
@@ -468,7 +468,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          <Link href="/open-store" passHref className="group">
+          <Link href="#" passHref className="group">
             <span className="bg-white duration-500 transition hover:scale-105 border border-gray-300 rounded-lg px-4 py-2.5 flex items-center space-x-2 hover:bg-transparent group-hover:border-[#c1cf16]">
               <span>Open A Store</span>
               <span className="text-[#c1cf16]">
