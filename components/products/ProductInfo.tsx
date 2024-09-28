@@ -6,6 +6,8 @@ import { useCartStore } from "@/store/cart-store/cartStore";
 import { useProductStore } from "@/store/product-stores/productsStore";
 import { fetchStores } from "@/services/api-client";
 import Image from "next/image";
+import { useShopStore } from "@/store/shop-stores/shopStore";
+import SpinnerLoading from "../Load-indicator/Spinner";
 
 interface ProductInfoProps {
   productId: string;
@@ -20,6 +22,7 @@ interface Store {
 const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
   const [error, setError] = useState<string | null>(null);
   const [storeInfo, setStoreInfo] = useState<Store | null>(null);
+  const storeData = useShopStore((state => state.currentStore));
   const { addItem, updateQuantity, getItemQuantity, toggleCart } =
     useCartStore();
   const { currentProduct, fetchProductById } = useProductStore();
@@ -69,7 +72,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
   }
 
   if (!currentProduct) {
-    return <div>Loading...</div>;
+    return <SpinnerLoading/>;
   }
 
   const averageRating =
@@ -215,7 +218,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
               )}
             </div>
             <p className="text-sm font-semibold">
-              {storeInfo?.name || currentProduct.store?.name || "Store"}
+              {storeInfo?.name || storeData?.name || "Store"}
             </p>
           </span>
         </div>
