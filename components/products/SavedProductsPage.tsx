@@ -9,7 +9,7 @@ import SpinnerLoading from "../Load-indicator/Spinner";
 
 const ProductPageHero = dynamic(() => import("./ProductPageHero"), {
   ssr: false,
-  loading: () => <SpinnerLoading/>,
+  loading: () => null,
 });
 const SavedProductsList = dynamic(() => import("./SavedProductsList"), {
   ssr: false,
