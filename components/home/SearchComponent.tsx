@@ -1,41 +1,53 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { useProductStore } from '@/stores/product-stores/productsStore';
 import { useShopStore } from '@/stores/shop-stores/shopStore';
 import { useRouter } from 'next/navigation';
+import { useDebounce } from '@/utils/useDebounce';
 
 const SearchComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
 
-  // Zustand product and store search state handlers
-  const { setSearchQuery: setProductSearchQuery, clearSearchAndFetch: clearProductSearch } = useProductStore();
-  const { setSearchTerm: setStoreSearchTerm, clearSearchAndFetch: clearStoreSearch, getFilteredStores } = useShopStore();
+  const { 
+    searchProduct,
+    resetProducts
+  } = useProductStore();
+
+  const { 
+    searchStore,
+    resetStores
+  } = useShopStore();
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      handleSearch();
+    } else {
+      resetProducts();
+      resetStores();
+    }
+  }, [debouncedSearchTerm]);
 
   const handleSearch = async () => {
-    if (!searchTerm.trim()) return; // Prevent empty searches
+    if (!searchTerm.trim()) return;
 
-    // First, attempt to search for stores
-    setStoreSearchTerm(searchTerm);
-    await clearStoreSearch(); // Clear and fetch filtered stores
-    const filteredStores = getFilteredStores();
+    // Search for products
+    const productResults = await searchProduct(searchTerm);
 
-    if (filteredStores.length > 0) {
-      // If stores match, redirect to /stores page
-      router.push('/stores');
+    // Search for stores
+    const storeResults = await searchStore(searchTerm);
+
+    if (productResults.length > 0) {
+      router.push(`/?search=${encodeURIComponent(searchTerm)}`);
+    } else if (storeResults.length > 0) {
+      router.push(`/stores?search=${encodeURIComponent(searchTerm)}`);
     } else {
-      // No store matches, proceed to search for products
-      setProductSearchQuery(searchTerm);
-      await clearProductSearch(); // Clear and fetch filtered products
-
-      // Redirect to the homepage to display product search results
-      router.push('/');
+      // No results found
+      router.push(`/no-results?search=${encodeURIComponent(searchTerm)}`);
     }
-
-    // Clear the search term after search
-    setSearchTerm('');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -42,6 +42,8 @@ interface StoreState {
   clearSearchAndFetch: () => Promise<void>;
   setCategory: (category: string) => void;
   resetStores: () => void;
+  searchStore: (query: string) => Promise<Store[]>;
+  resetStore: () => void;
 }
 
 export const useShopStore = create<StoreState>((set, get) => ({
@@ -207,5 +209,49 @@ export const useShopStore = create<StoreState>((set, get) => ({
       console.error("Error fetching top products:", error);
       return [];
     }
+  },
+  // Fetch store from General search input
+  searchStore: async (query: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetchStores(`name=${query}&pageNumber=1&recordsPerPage=10&sortBy=createdAt&sortOrder=DESC`);
+      if (response && Array.isArray(response.data.stores)) {
+        const storesData = response.data.stores.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          numberOfProducts: item.numberOfProducts || 0,
+          logoUrl: item.image || "",
+          description: item.description || "",
+          rating: item.rating,
+          reviewCount: item.reviewCount,
+        }));
+        set({
+          stores: storesData,
+          hasMore: storesData.length === 10,
+          isLoading: false,
+          searchTerm: query,
+        });
+        return storesData;
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (error: any) {
+      set({
+        error: error.message || "An error occurred while searching stores",
+        stores: [],
+        isLoading: false,
+      });
+      return [];
+    }
+  },
+
+  resetStore: () => {
+    set({
+      stores: [],
+      hasMore: false,
+      isLoading: false,
+      error: null,
+      searchTerm: "",
+    });
   },
 }));

@@ -70,6 +70,8 @@ interface ProductState {
   removeSavedProduct: (productId: string) => void;
   isSaved: (productId: string) => boolean;
   getSavedProductsCount: () => number;
+  searchProduct: (query: string) => Promise<Product[]>;
+  resetProduct: () => void;
 }
 
 export const useProductStore = create<ProductState>()(
@@ -195,6 +197,49 @@ export const useProductStore = create<ProductState>()(
 
       getSavedProductsCount: () => {
         return get().savedProducts.length;
+      },
+      // Fetch product from General search input
+      searchProduct: async (query: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response: ProductsResponse = await fetchProducts(
+            {
+              pageNumber: 1,
+              recordsPerPage: 9,
+              name: query,
+            },
+            useAuthStore.getState()?.accessToken ?? ""
+          );
+
+          const products = response.data.products;
+
+          set({
+            products,
+            totalProducts: response.data.pagination.totalRecords,
+            currentPage: response.data.pagination.currentPage,
+            hasNextPage:
+              response.data.pagination.currentPage <
+              response.data.pagination.totalPages,
+            isLoading: false,
+            searchQuery: query,
+          });
+
+          return products;
+        } catch (error) {
+          set({ error: (error as Error).message, isLoading: false });
+          return [];
+        }
+      },
+
+      resetProduct: () => {
+        set({
+          products: [],
+          totalProducts: 0,
+          currentPage: 1,
+          hasNextPage: false,
+          searchQuery: "",
+          error: null,
+        });
       },
     }),
     {
