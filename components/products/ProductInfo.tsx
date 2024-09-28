@@ -215,7 +215,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
               )}
             </div>
             <p className="text-sm font-semibold">
-              {storeInfo?.name || currentProduct.store?.name || "Unknown Store"}
+              {storeInfo?.name || currentProduct.store?.name || "Store"}
             </p>
           </span>
         </div>
