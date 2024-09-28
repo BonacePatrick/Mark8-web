@@ -43,7 +43,7 @@ const SearchComponent = () => {
     if (productResults.length > 0) {
       router.push(`/?search=${encodeURIComponent(searchTerm)}`);
     } else if (storeResults.length > 0) {
-      router.push(`/stores?search=${encodeURIComponent(searchTerm)}`);
+      router.push(`/store?search=${encodeURIComponent(searchTerm)}`);
     } else {
       // No results found
       router.push(`/no-results?search=${encodeURIComponent(searchTerm)}`);
