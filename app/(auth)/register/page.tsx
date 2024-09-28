@@ -3,6 +3,12 @@ import RegisterForm from "@/components/auth/register/RegisterForm";
 import Image from "next/image";
 import React from "react";
 import { Logo } from "../../assets";
+import { Metadata } from "next";
+
+export const metadata:Metadata = {
+  title: "Register | Mark8",
+  description: "Register to Mark8",
+}
 
 export default function RegisterPage() {
   return (

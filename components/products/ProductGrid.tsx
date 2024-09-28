@@ -1,6 +1,6 @@
 import { FC } from "react";
 import ProductCard from "./ProductCard";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
 import ProductSkeleton from "./ProductSkeleton"
 
 const ProductGrid: FC = () => {

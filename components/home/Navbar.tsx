@@ -17,15 +17,20 @@ import {
   FaUser,
 } from "react-icons/fa";
 // import SearchComponent from "./SearchComponent";
-import { useCartStore } from "@/stores/cart-store/cartStore";
+import { useCartStore } from "@/store/cart-store/cartStore";
 import CartModal from "../products/CartModel";
 import SearchComponent from "./SearchComponent";
+import { useAuthStore } from "@/store/auth-stores/authStore";
+import { useRouter } from "next/navigation";
+
 
 interface NavItem {
   label: string;
   href: string;
   icon?: React.ReactNode;
 }
+
+
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,6 +39,9 @@ const Navbar = () => {
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
   const { toggleCart, items } = useCartStore();
+  const { user, logout } = useAuthStore();
+  const router = useRouter();
+
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -45,6 +53,27 @@ const Navbar = () => {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+ const getUserDisplayName = () => {
+    if (!user || !user.firstName || !user.lastName) return 'User';
+    const { firstName, lastName } = user;
+    if (firstName && lastName) return `${firstName} ${lastName}`;
+    if (firstName) return firstName;
+    if (lastName) return lastName;
+    return user.email?.split('@')[0];
+  };
+
+  const getUserEmail = () => {
+    return localStorage.getItem("user-email")|| "Not logged in"
+  };
+
+  // handle logout
+  const handleLogout = () => {
+    localStorage.clear()
+    router.push("/login")
+    logout();
+    setDropdownOpen(false);
   };
 
   // Close mobile menu when route changes
@@ -101,6 +130,7 @@ const Navbar = () => {
     }
     return pathname.startsWith(href);
   };
+
 
   return (
     <>
@@ -318,10 +348,10 @@ const Navbar = () => {
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-800">
-                            Yves Honore B.
+                          {getUserDisplayName()}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            yveshonore@awesomity.rw
+                          {getUserEmail()}
                           </p>
                         </div>
                       </div>
@@ -365,7 +395,10 @@ const Navbar = () => {
                       <hr className="border-gray-200" />
 
                       {/* Logout */}
-                      <div className="flex items-center space-x-3 cursor-pointer">
+                      <div
+                        className="flex items-center space-x-3 cursor-pointer"
+                        onClick={handleLogout}
+                      >
                         <FaSignOutAlt className="text-gray-500" />
                         <span className="text-gray-700 font-medium">
                           Logout
@@ -455,6 +488,7 @@ const Navbar = () => {
             </span>
           </Link>
 
+          {/* User account */}
           <div className="relative group">
             <div className="dropdown">
               <button
@@ -513,10 +547,10 @@ const Navbar = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800">
-                        Yves Honore B.
+                      {getUserDisplayName()}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        yveshonore@awesomity.rw
+                      {getUserEmail()}
                       </p>
                     </div>
                   </div>
@@ -556,7 +590,10 @@ const Navbar = () => {
                   <hr className="border-gray-200" />
 
                   {/* Logout */}
-                  <div className="flex items-center space-x-3 cursor-pointer">
+                  <div
+                    className="flex items-center space-x-3 cursor-pointer"
+                    onClick={handleLogout}
+                  >
                     <FaSignOutAlt className="text-gray-500" />
                     <span className="text-gray-700 font-medium">Logout</span>
                   </div>

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
       };
     }
     return {
-      title: `${product.name} | Your Store Name`,
+      title: `${product.name} | Mark8`,
       description: product.description,
     };
   } catch (error) {

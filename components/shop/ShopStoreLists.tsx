@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useShopStore } from "@/stores/shop-stores/shopStore";
+import { useShopStore } from "@/store/shop-stores/shopStore";
 import ShopItem from "./shopItem";
 
 const ShopStoreLists: React.FC = () => {

@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { filterVector } from '@/app/assets';
-import { useProductStore } from '@/stores/product-stores/productsStore';
+import { useProductStore } from '@/store/product-stores/productsStore';
 
 const Hero: FC = () => {
   const { 

@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { Product, useProductStore } from "@/stores/product-stores/productsStore";
+import { Product, useProductStore } from "@/store/product-stores/productsStore";
 import ProductCard from "./ProductCard";
+import SpinnerLoading from "../Load-indicator/Spinner";
 
 const SavedProductsList = () => {
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
@@ -26,7 +27,7 @@ const SavedProductsList = () => {
   }, [getSavedProducts]);
 
   if (isLoading) {
-    return <div>Loading saved products...</div>;
+    return <SpinnerLoading/>
   }
 
   return (

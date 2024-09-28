@@ -58,10 +58,13 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
+
+  const userEmail = watch("email") 
 
   const signupMutation = useMutation<
     LoginResponse,
@@ -77,6 +80,7 @@ export default function RegisterForm() {
         setTokens(accessToken, refreshToken);
         localStorage.setItem("user-token", accessToken)
         localStorage.setItem("user-refresh-token", refreshToken)
+        localStorage.setItem("user-email", userEmail);
         apiClient().defaults.headers.common[
           "Authorization"
         ] = `Bearer ${accessToken}`;

@@ -1,5 +1,5 @@
 import { coverImage, deliveryBox } from "@/app/assets";
-import { useShopStore } from "@/stores/shop-stores/shopStore";
+import { useShopStore } from "@/store/shop-stores/shopStore";
 import { Heart, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

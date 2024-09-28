@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { coverImage, shoppingCartIcon } from "@/app/assets";
-import { useProductStore } from "@/stores/product-stores/productsStore";
-import { useCartStore } from "@/stores/cart-store/cartStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
+import { useCartStore } from "@/store/cart-store/cartStore";
 import { FC, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 

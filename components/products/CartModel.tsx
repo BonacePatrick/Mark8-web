@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useCartStore } from "@/stores/cart-store/cartStore";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useCartStore } from "@/store/cart-store/cartStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
 import { motion } from "framer-motion";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";

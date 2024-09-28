@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { fetchStores, fetchProducts } from "@/services/api-client";
+import { fetchStores, fetchProducts, fetchStoreById } from "@/services/api-client";
 
 export interface Store {
   id: string;
@@ -44,6 +44,8 @@ interface StoreState {
   resetStores: () => void;
   searchStore: (query: string) => Promise<Store[]>;
   resetStore: () => void;
+  currentStore: Store | null;
+  fetchSingleStore: (id: string) => Promise<void>;
 }
 
 export const useShopStore = create<StoreState>((set, get) => ({
@@ -56,6 +58,7 @@ export const useShopStore = create<StoreState>((set, get) => ({
   searchQuery: "",
   category: "all",
   currentPage: 1,
+  currentStore: null,
   totalStores: () => get().stores.length,
   resetStores: () => set({ stores: [], currentPage: 1, hasMore: true }),
 
@@ -242,6 +245,35 @@ export const useShopStore = create<StoreState>((set, get) => ({
         isLoading: false,
       });
       return [];
+    }
+  },
+  fetchSingleStore: async (id: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetchStoreById(id);
+      if (response && response.data) {
+        const store = response.data;
+        set({
+          currentStore: {
+            id: store.id,
+            name: store.name,
+            numberOfProducts: store.numberOfProducts || 0,
+            logoUrl: store.image || "",
+            description: store.description || "",
+            rating: store.rating,
+            reviewCount: store.reviewCount,
+          },
+        });
+      } else {
+        throw new Error("Store not found");
+      }
+    } catch (error: any) {
+      set({
+        error: error.message || "An error occurred while fetching the store",
+        currentStore: null,
+      });
+    } finally {
+      set({ isLoading: false });
     }
   },
 

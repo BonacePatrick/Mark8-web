@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useAuthStore } from '@/stores/auth-stores/authStore';
+import { useAuthStore } from '@/store/auth-stores/authStore';
 
 const API_URL = "https://api.mark8.awesomity.rw";
 
@@ -85,6 +85,7 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
   return api;
 };
 
+// Fetch products
 export const fetchProducts = async (params: {
   pageNumber?: number;
   recordsPerPage?: number;
@@ -114,6 +115,7 @@ export const fetchProducts = async (params: {
   }
 };
 
+// Fetch single product
 export const fetchProductById = async (id: string, serverSideToken?: string) => {
   try {
     const api = apiClient(serverSideToken);
@@ -125,6 +127,7 @@ export const fetchProductById = async (id: string, serverSideToken?: string) => 
   }
 };
 
+// Fetch stores
 export const fetchStores = async (serverSideToken?: string) => {
   try {
     const api = apiClient(serverSideToken);
@@ -135,5 +138,18 @@ export const fetchStores = async (serverSideToken?: string) => {
     throw error;
   }
 };
+
+// Fetch single store by id
+export const fetchStoreById = async (id: string, serverSideToken?: string) => {
+  try {
+    const api = apiClient(serverSideToken);
+    const response = await api.get(`/store/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching store by ID:", error);
+    throw error;
+  }
+};
+
 
 export default apiClient;

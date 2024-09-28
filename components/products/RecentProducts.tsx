@@ -5,7 +5,7 @@ import TopStoresPage from "../shop/TopStoresPage";
 import ProductGrid from "./ProductGrid";
 import Image from "next/image";
 import { deliveryBox, filterButton, sortButton } from "@/app/assets";
-import { useProductStore } from "@/stores/product-stores/productsStore";
+import { useProductStore } from "@/store/product-stores/productsStore";
 import ProductSkeleton from "./ProductSkeleton";
 import ShopSkeleton from "../shop/ShopSkeleton";
 

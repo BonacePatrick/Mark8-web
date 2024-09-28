@@ -13,7 +13,7 @@ const NunitoRegular = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "E-commerce app",
+  title: "Mark8 | E-commerce app",
   description:
     "This is an e-commerce app where users can view and purchase products, and store owners can create stores and list their products",
 };

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
-import { useProductStore } from '@/stores/product-stores/productsStore';
-import { useShopStore } from '@/stores/shop-stores/shopStore';
+import { useProductStore } from '@/store/product-stores/productsStore';
+import { useShopStore } from '@/store/shop-stores/shopStore';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/utils/useDebounce';
 

@@ -44,10 +44,13 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
+
+  const userEmail = watch("email") 
 
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginFormData>({
     mutationFn: (data) =>
@@ -60,6 +63,7 @@ export default function LoginForm() {
         setTokens(accessToken, refreshToken);
         localStorage.setItem("user-token", accessToken);
         localStorage.setItem("user-refresh-token", refreshToken);
+        localStorage.setItem("user-email", userEmail);
         apiClient().defaults.headers.common[
           "Authorization"
         ] = `Bearer ${accessToken}`;
@@ -69,7 +73,7 @@ export default function LoginForm() {
           firstName: data.data.firstName,
           lastName: data.data.lastName,
         };
-        setUser(userData);
+        setUser(data.data);
         toast.success("Login successfully");
         router.push("/");
       } else {

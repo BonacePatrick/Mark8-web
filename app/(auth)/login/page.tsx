@@ -2,6 +2,12 @@ import LoginForm from '@/components/auth/login/LoginForm'
 import RegisterPrompt from '@/components/auth/register/RegisterPrompt'
 import { Logo } from '../../assets'
 import Image from 'next/image'
+import { Metadata } from 'next'
+
+export const metadata:Metadata = {
+  title: 'Login | Mark8',
+  description: 'Login to Mark8',
+}
 
 export default function LoginPage() {
   return (

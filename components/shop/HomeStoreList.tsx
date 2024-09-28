@@ -2,15 +2,16 @@
 
 import { FC, useMemo } from "react";
 import Image from "next/image";
-import { Store, useShopStore } from "@/stores/shop-stores/shopStore";
+import { Store, useShopStore } from "@/store/shop-stores/shopStore";
 import { coverImage } from "@/app/assets";
+import Link from "next/link";
 
 const HomeStoreItem: FC<{ store: Store }> = ({ store }) => {
   const imageUrl = store.logoUrl?.trim() ? store.logoUrl : coverImage.src;
 
   return (
-    <div className="flex items-center space-x-3 p-2 bg-white hover:bg-gray-100 rounded-lg">
-      <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden">
+    <Link href={`/store/${store.id}`} className="flex items-center space-x-3 p-2 bg-white hover:bg-gray-100 rounded-lg">
+      <span className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden">
         <Image
           src={imageUrl}
           alt={`${store.name} logo`}
@@ -26,7 +27,7 @@ const HomeStoreItem: FC<{ store: Store }> = ({ store }) => {
             target.src = coverImage.src;
           }}
         />
-      </div>
+      </span>
       <div className="flex-1">
         <h4 className="font-semibold">{store.name}</h4>
         <p className="text-sm text-gray-500">
@@ -47,7 +48,7 @@ const HomeStoreItem: FC<{ store: Store }> = ({ store }) => {
           d="M9 5l7 7-7 7"
         />
       </svg>
-    </div>
+    </Link>
   );
 };
 
