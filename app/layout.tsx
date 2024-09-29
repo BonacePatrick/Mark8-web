@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
 
+
 // Font
 const NunitoRegular = localFont({
   src: "./fonts/Nunito-Regular.ttf",
