@@ -57,7 +57,7 @@ const Hero: FC = () => {
 
       {/* Subtitle */}
       <p className="text-sm text-gray-400 md:text-base lg:text-lg">
-        {totalProducts.toLocaleString()} Products
+        {totalProducts === 1 ? `${totalProducts} product` : `${totalProducts} products`}
       </p>
 
       {/* Search Box */}
