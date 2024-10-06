@@ -8,8 +8,7 @@ import { fetchStores } from "@/services/api-client";
 import Image from "next/image";
 import { useShopStore } from "@/store/shop-stores/shopStore";
 import SpinnerLoading from "../Load-indicator/Spinner";
-import { AnimatePresence } from "framer-motion";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ProductInfoProps {
   productId: string;
@@ -41,6 +40,24 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
   const [showHeart, setShowHeart] = useState(false);
 
   const quantity = getItemQuantity(productId);
+
+  useEffect(() => {
+    if (product) {
+      setIsProductSaved(isSaved(product.id));
+    }
+  }, [product, isSaved]);
+
+  const handleSaveProduct = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (product && isProductSaved) {
+      removeSavedProduct(product.id);
+    } else if (product) {
+      saveProduct(product);
+    }
+    setIsProductSaved(!isProductSaved);
+    setShowHeart(true);
+    setTimeout(() => setShowHeart(false), 1000);
+  };
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -77,13 +94,6 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
     loadStoreInfo();
   }, [currentProduct]);
 
-  // Check if the product is saved
-  useEffect(() => {
-    if (currentProduct) {
-      setIsProductSaved(isSaved(currentProduct.id));
-    }
-  }, [currentProduct, isSaved]);
-
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
@@ -91,18 +101,6 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
   if (!currentProduct) {
     return <SpinnerLoading />;
   }
-
-  const handleSaveProduct = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isProductSaved) {
-      removeSavedProduct(currentProduct.id);
-    } else {
-      saveProduct(currentProduct);
-    }
-    setIsProductSaved(!isProductSaved);
-    setShowHeart(true);
-    setTimeout(() => setShowHeart(false), 1000);
-  };
 
   const averageRating =
     currentProduct.reviews.length > 0
