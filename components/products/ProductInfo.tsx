@@ -8,6 +8,8 @@ import { fetchStores } from "@/services/api-client";
 import Image from "next/image";
 import { useShopStore } from "@/store/shop-stores/shopStore";
 import SpinnerLoading from "../Load-indicator/Spinner";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface ProductInfoProps {
   productId: string;
@@ -22,13 +24,21 @@ interface Store {
 const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
   const [error, setError] = useState<string | null>(null);
   const [storeInfo, setStoreInfo] = useState<Store | null>(null);
-  const storeData = useShopStore((state => state.currentStore));
+  const storeData = useShopStore((state) => state.currentStore);
   const { addItem, updateQuantity, getItemQuantity, toggleCart } =
     useCartStore();
-  const { currentProduct, fetchProductById } = useProductStore();
+  const {
+    currentProduct,
+    fetchProductById,
+    saveProduct,
+    removeSavedProduct,
+    isSaved,
+  } = useProductStore();
   const product = useProductStore((state) =>
     state.products.find((p) => p.id === productId)
   );
+  const [isProductSaved, setIsProductSaved] = useState(false);
+  const [showHeart, setShowHeart] = useState(false);
 
   const quantity = getItemQuantity(productId);
 
@@ -67,13 +77,32 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
     loadStoreInfo();
   }, [currentProduct]);
 
+  // Check if the product is saved
+  useEffect(() => {
+    if (currentProduct) {
+      setIsProductSaved(isSaved(currentProduct.id));
+    }
+  }, [currentProduct, isSaved]);
+
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
 
   if (!currentProduct) {
-    return <SpinnerLoading/>;
+    return <SpinnerLoading />;
   }
+
+  const handleSaveProduct = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isProductSaved) {
+      removeSavedProduct(currentProduct.id);
+    } else {
+      saveProduct(currentProduct);
+    }
+    setIsProductSaved(!isProductSaved);
+    setShowHeart(true);
+    setTimeout(() => setShowHeart(false), 1000);
+  };
 
   const averageRating =
     currentProduct.reviews.length > 0
@@ -115,7 +144,29 @@ const ProductInfo: FC<ProductInfoProps> = ({ productId }) => {
           </span>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="flex items-center justify-center space-x-1 border py-2.5 px-6 rounded-lg bg-white transition duration-500 hover:scale-105 hover:border-secondary">
+          <button
+            onClick={handleSaveProduct}
+            className="flex items-center relative justify-center space-x-1 border py-2.5 px-6 rounded-lg bg-white transition duration-500 hover:scale-105 hover:border-secondary"
+          >
+            <AnimatePresence>
+              {showHeart && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#c1cf16"
+                    className="w-8 h-8"
+                  >
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <span className="text-secondary">
               <Heart size={16} />
             </span>
