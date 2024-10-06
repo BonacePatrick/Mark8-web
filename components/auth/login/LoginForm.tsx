@@ -68,7 +68,6 @@ export default function LoginForm() {
           "Authorization"
         ] = `Bearer ${accessToken}`;
         setUser(data.data);
-        toast.success("Login successfully");
         router.push("/");
       } else {
         setError("Login");
