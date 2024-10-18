@@ -8,4 +8,4 @@ and connect with backend servers(API Integration)
 
 UI features you don't see is because ui for it doesn't provided to me as part of challenge.
 
-However user can search, interact with products by add, save product to cart.
+However user create & login with their accounts and access to search, interact with products by add, save product to cart.
