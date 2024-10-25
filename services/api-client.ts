@@ -1,5 +1,10 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useAuthStore } from '@/store/auth-stores/authStore';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
+import { useAuthStore } from "@/store/auth-stores/authStore";
 
 const API_URL = "https://api.mark8.awesomity.rw";
 
@@ -10,7 +15,7 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
 
   api.interceptors.request.use(
     (config: any) => {
-      const isServer = typeof window === 'undefined';
+      const isServer = typeof window === "undefined";
       let token: string | null = null;
 
       if (isServer && serverSideToken) {
@@ -21,9 +26,12 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
 
       config.headers = {
         ...config.headers,
-        'Content-Type': config.data instanceof FormData ? 'multipart/form-data' : 'application/json',
-        Accept: 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
+        "Content-Type":
+          config.data instanceof FormData
+            ? "multipart/form-data"
+            : "application/json",
+        Accept: "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
       };
 
       return config;
@@ -38,7 +46,9 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
       return response;
     },
     async (error: AxiosError) => {
-      const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+      const originalRequest = error.config as AxiosRequestConfig & {
+        _retry?: boolean;
+      };
 
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
@@ -64,14 +74,16 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
           useAuthStore.getState().setTokens(newAccessToken, newRefreshToken);
 
           if (originalRequest.headers) {
-            originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
           }
 
           return api(originalRequest);
         } catch (refreshError) {
           console.error("Failed to refresh access token:", refreshError);
           useAuthStore.getState().logout();
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             window.location.href = "/login";
           }
           return Promise.reject(refreshError);
@@ -86,17 +98,20 @@ const apiClient = (serverSideToken?: string): AxiosInstance => {
 };
 
 // Fetch products
-export const fetchProducts = async (params: {
-  pageNumber?: number;
-  recordsPerPage?: number;
-  name?: string;
-  category?: string;
-  minUnitPrice?: number;
-  maxUnitPrice?: number;
-  sortBy?: string;
-  sortOrder?: "ASC" | "DESC";
-  storeId?: string;
-}, serverSideToken?: string) => {
+export const fetchProducts = async (
+  params: {
+    pageNumber?: number;
+    recordsPerPage?: number;
+    name?: string;
+    category?: string;
+    minUnitPrice?: number;
+    maxUnitPrice?: number;
+    sortBy?: string;
+    sortOrder?: "ASC" | "DESC";
+    storeId?: string;
+  },
+  serverSideToken?: string
+) => {
   try {
     const validParams = {
       ...params,
@@ -116,7 +131,10 @@ export const fetchProducts = async (params: {
 };
 
 // Fetch single product
-export const fetchProductById = async (id: string, serverSideToken?: string) => {
+export const fetchProductById = async (
+  id: string,
+  serverSideToken?: string
+) => {
   try {
     const api = apiClient(serverSideToken);
     const response = await api.get(`/products/${id}`);
@@ -150,6 +168,5 @@ export const fetchStoreById = async (id: string, serverSideToken?: string) => {
     throw error;
   }
 };
-
 
 export default apiClient;
